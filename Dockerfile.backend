@@ -1,1 +1,29 @@
- 
+FROM maven:3.9-amazoncorretto-21 AS build
+WORKDIR /app
+
+# Sao chép pom.xml trước để tận dụng cache của Docker khi cài đặt các dependencies
+COPY pom.xml .
+COPY .mvn .mvn
+COPY mvnw mvnw
+COPY mvnw.cmd mvnw.cmd
+
+# Cài đặt dependencies 
+RUN mvn dependency:go-offline -B
+
+# Sao chép mã nguồn và build
+COPY src src
+RUN mvn package -DskipTests
+
+# Runtime image
+FROM amazoncorretto:21-alpine
+WORKDIR /app
+
+# Sao chép JAR file từ giai đoạn build
+COPY --from=build /app/target/*.jar app.jar
+
+# Biến môi trường để kết nối với frontend trên Vercel
+ENV SPRING_PROFILES_ACTIVE=prod
+
+EXPOSE 8080
+
+ENTRYPOINT ["java", "-jar", "app.jar"]
