@@ -1,0 +1,22 @@
+{
+  "rewrites": [
+    { 
+      "source": "/api/:path*", 
+      "destination": "https://simple-chat-app-springboot-websocket-demo-yjtx.onrender.com/api/:path*"
+    },
+    { 
+      "source": "/ws/:path*", 
+      "destination": "https://simple-chat-app-springboot-websocket-demo-yjtx.onrender.com/ws/:path*"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "Access-Control-Allow-Origin", "value": "*" },
+        { "key": "Access-Control-Allow-Methods", "value": "GET, POST, PUT, DELETE, OPTIONS" },
+        { "key": "Access-Control-Allow-Headers", "value": "X-Requested-With, Content-Type, Accept" }
+      ]
+    }
+  ]
+} 

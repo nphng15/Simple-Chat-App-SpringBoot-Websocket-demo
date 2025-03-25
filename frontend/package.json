@@ -1,0 +1,12 @@
+{
+  "name": "chat-app-frontend",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "serve -s .",
+    "build": "echo 'Build completed'"
+  },
+  "dependencies": {
+    "serve": "^14.0.0"
+  }
+} 
