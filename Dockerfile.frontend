@@ -1,0 +1,26 @@
+FROM node:18-alpine AS build
+
+WORKDIR /app
+
+# Tạo package.json nếu chưa có
+RUN echo '{\n  "name": "chat-app-frontend",\n  "version": "1.0.0",\n  "scripts": {\n    "build": "cp -r src/main/resources/static/* dist"\n  }\n}' > package.json
+
+# Sao chép frontend code
+COPY src/main/resources/static ./src/main/resources/static
+
+# Tạo thư mục dist và sao chép các file static
+RUN mkdir -p dist && npm run build
+
+# Production image với Nginx
+FROM nginx:alpine
+
+# Sao chép cấu hình Nginx
+RUN rm -rf /usr/share/nginx/html/*
+COPY --from=build /app/dist /usr/share/nginx/html
+
+# Tạo cấu hình Nginx để định tuyến API đến backend
+RUN echo 'server {\n  listen 80;\n  location / {\n    root /usr/share/nginx/html;\n    index index.html;\n    try_files $uri $uri/ /index.html;\n  }\n  location /api {\n    proxy_pass ${BACKEND_URL};\n    proxy_set_header Host $host;\n    proxy_set_header X-Real-IP $remote_addr;\n  }\n  location /ws {\n    proxy_pass ${BACKEND_URL};\n    proxy_http_version 1.1;\n    proxy_set_header Upgrade $http_upgrade;\n    proxy_set_header Connection "upgrade";\n    proxy_set_header Host $host;\n  }\n}' > /etc/nginx/conf.d/default.conf
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]

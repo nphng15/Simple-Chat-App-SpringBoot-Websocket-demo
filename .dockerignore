@@ -1,0 +1,22 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Build directories
+target/
+!target/*.jar
+node_modules/
+dist/
+
+# IDE files
+.idea/
+.vscode/
+
+# Logs
+*.log
+
+# Docker files
+Dockerfile*
+docker-compose*
+.dockerignore
