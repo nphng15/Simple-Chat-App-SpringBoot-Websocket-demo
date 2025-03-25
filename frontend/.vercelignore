@@ -1,0 +1,10 @@
+# Loại trừ các file và thư mục gốc
+/css
+/js
+/index.html
+
+# Chỉ giữ lại thư mục public và các file cấu hình
+README.md
+.git
+.gitignore
+node_modules 
