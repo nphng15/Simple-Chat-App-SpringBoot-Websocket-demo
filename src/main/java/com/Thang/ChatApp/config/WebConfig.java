@@ -10,7 +10,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("*") // Trong môi trường production, bạn nên giới hạn domain cụ thể
+                .allowedOriginPatterns("*") // Sử dụng allowedOriginPatterns thay vì allowedOrigins
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
                 .allowCredentials(true);
