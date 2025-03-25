@@ -1,4 +1,4 @@
-# Hướng Dẫn Deploy Ứng Dụng Chat với Docker
+# Docker deployment
 
 ## Cài đặt Docker
 
